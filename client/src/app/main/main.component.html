@@ -1,16 +1,6 @@
 <div *ngFor="let post of posts">
-    <span>{{ post.user.pseudo }} </span>
-    <span *ngIf="(now.getTime() - post.createdAt.getTime()) / 1000 < 60">
-        Il y a {{ (now.getTime() - post.createdAt.getTime()) / 1000 | number : "1.0-0" }} secondes
-    </span>
-    <span *ngIf="(now.getTime() - post.createdAt.getTime()) / 1000 / 60 < 60">
-        Il y a {{ (now.getTime() - post.createdAt.getTime()) / 1000 / 60 | number : "1.0-0" }} minutes
-    </span>
-    <span *ngIf="(now.getTime() - post.createdAt.getTime()) / 1000 / 60 / 60 < 24">
-        Il y a {{ (now.getTime() - post.createdAt.getTime()) / 1000 / 60 / 60 | number : "1.0-0" }} heures
-    </span>
+    <span>{{ post.user.pseudo }} - </span>
+    <span>Il y a {{ getElapsedTime(post) }}</span>
     <p>{{ post.text }}</p>
     <hr />
 </div>
-
-<ng-template #seconds> Please friend, login. </ng-template>
