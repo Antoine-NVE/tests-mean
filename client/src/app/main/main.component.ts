@@ -14,9 +14,9 @@ export class MainComponent {
     public posts: Post[] = [
         { _id: '1', text: 'Un premier post', createdAt: new Date(2024, 5, 2, 16, 35, 4), user: { _id: '1', pseudo: 'Antoine' } },
         { _id: '2', text: 'Un deuxième post', createdAt: new Date(2023, 9, 3, 12, 4, 45), user: { _id: '2', pseudo: 'Georges' } },
-        { _id: '3', text: 'Un deuxième post', createdAt: new Date(2019, 3, 3, 12, 4, 45), user: { _id: '2', pseudo: 'Georges' } },
-        { _id: '4', text: 'Un deuxième post', createdAt: new Date(2024, 5, 2, 12, 4, 45), user: { _id: '2', pseudo: 'Georges' } },
-        { _id: '5', text: 'Un deuxième post', createdAt: new Date(2024, 5, 3, 12, 4, 45), user: { _id: '2', pseudo: 'Georges' } },
+        { _id: '3', text: 'Un troisième post', createdAt: new Date(2019, 3, 3, 12, 4, 45), user: { _id: '2', pseudo: 'Georges' } },
+        { _id: '4', text: 'Un quatrième post', createdAt: new Date(2024, 5, 2, 12, 4, 45), user: { _id: '2', pseudo: 'Georges' } },
+        { _id: '5', text: 'Un cinquième post', createdAt: new Date(2024, 5, 3, 12, 4, 45), user: { _id: '2', pseudo: 'Georges' } },
     ];
 
     public getElapsedTime(post: Post): string {
