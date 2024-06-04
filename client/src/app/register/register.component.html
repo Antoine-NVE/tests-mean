@@ -6,34 +6,51 @@
         <input
             id="pseudo"
             type="text"
-            class="form-control {{
-                registerForm.get('pseudo')?.errors && (registerForm.get('pseudo')?.touched || registerForm.get('pseudo')?.dirty)
-                    ? 'is-invalid'
-                    : !registerForm.get('pseudo')?.errors && registerForm.get('pseudo')?.dirty
-                    ? 'is-valid'
-                    : ''
-            }}"
+            class="form-control"
+            [ngClass]="pseudo?.errors && (pseudo?.touched || pseudo?.dirty) ? 'is-invalid' : !pseudo?.errors && pseudo?.dirty ? 'is-valid' : ''"
             formControlName="pseudo"
         />
-        <div *ngIf="registerForm.get('pseudo')?.errors?.['required']" class="invalid-feedback">Veuillez saisir votre pseudo</div>
-        <div *ngIf="registerForm.get('pseudo')?.errors?.['minlength']" class="invalid-feedback">3 caractères minimum</div>
-        <div *ngIf="registerForm.get('pseudo')?.errors?.['maxlength']" class="invalid-feedback">15 caractères maximum</div>
+        <div class="valid-feedback">Looks good!</div>
+        <div *ngIf="pseudo?.errors?.['required']" class="invalid-feedback">Veuillez saisir votre pseudo</div>
+        <div *ngIf="pseudo?.errors?.['minlength']" class="invalid-feedback">3 caractères minimum</div>
+        <div *ngIf="pseudo?.errors?.['maxlength']" class="invalid-feedback">15 caractères maximum</div>
     </div>
 
     <div class="mb-3">
         <label for="email" class="form-label">Email : </label>
-        <input id="email" type="email" class="form-control" formControlName="email" />
+        <input
+            id="email"
+            type="email"
+            class="form-control"
+            [ngClass]="email?.errors && (email?.touched || email?.dirty) ? 'is-invalid' : !email?.errors && email?.dirty ? 'is-valid' : ''"
+            formControlName="email"
+        />
+        <div class="valid-feedback">Looks good!</div>
+        <div *ngIf="email?.errors?.['required']" class="invalid-feedback">Veuillez saisir votre email</div>
+        <div *ngIf="email?.errors?.['pattern']" class="invalid-feedback">Email invalide</div>
     </div>
 
     <div class="mb-3">
         <label for="plainPassword" class="form-label">Mot de passe : </label>
-        <input id="plainPassword" type="password" class="form-control" formControlName="plainPassword" />
+        <input
+            id="plainPassword"
+            type="password"
+            class="form-control"
+            [ngClass]="
+                plainPassword?.errors && (plainPassword?.touched || plainPassword?.dirty)
+                    ? 'is-invalid'
+                    : !plainPassword?.errors && plainPassword?.dirty
+                    ? 'is-valid'
+                    : ''
+            "
+            formControlName="plainPassword"
+        />
+        <div class="valid-feedback">Looks good!</div>
+        <div *ngIf="plainPassword?.errors?.['required']" class="invalid-feedback">Veuillez saisir votre mot de passe</div>
+        <div *ngIf="plainPassword?.errors?.['pattern']" class="invalid-feedback">Minimum 1 majuscule, 1 minuscule, 1 chiffre et 8 caractères</div>
+        <div *ngIf="plainPassword?.errors?.['maxlength']" class="invalid-feedback">Maximum 40 caractères</div>
     </div>
-    <button
-        type="submit"
-        class="btn btn-outline-light d-block ms-auto"
-        [disabled]="registerForm.get('pseudo')?.errors || registerForm.get('email')?.errors || registerForm.get('plainPassword')?.errors"
-    >
+    <button type="submit" class="btn btn-outline-light d-block ms-auto" [disabled]="pseudo?.errors || email?.errors || plainPassword?.errors">
         S'inscrire
     </button>
 </form>
