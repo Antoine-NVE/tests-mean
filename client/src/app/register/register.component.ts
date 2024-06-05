@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserService } from '../services/user.service';
 
 @Component({
     selector: 'app-register',
@@ -23,10 +24,17 @@ export class RegisterComponent {
     public email = this.registerForm.get('email');
     public plainPassword = this.registerForm.get('plainPassword');
 
+    constructor(private userService: UserService) {}
+
     public onSubmit() {
         if (this.registerForm.valid) {
-            console.log('Formulaire soumis avec succès : ');
-            console.log(this.registerForm.value);
+            // console.log('Formulaire soumis avec succès : ');
+            // console.log(this.registerForm.value);
+
+            this.userService.register(this.registerForm.value).subscribe({
+                next: (response: {}) => console.log(response),
+                error: (error) => console.log(error.message),
+            });
         } else {
             console.log('Formulaire non valide');
         }

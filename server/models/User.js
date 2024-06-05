@@ -5,39 +5,39 @@ const bcrypt = require('bcrypt');
 const userSchema = mongoose.Schema({
     pseudo: {
         type: String,
-        required: [true, 'Pseudo requis'],
-        minlength: [3, '3 caractères minimum'],
-        maxlength: [15, '15 caractères maximum'],
+        required: [true, 'pseudo requis'],
+        minlength: [3, 'pseudo trop court'],
+        maxlength: [15, 'pseudo trop long'],
         unique: true,
     },
     email: {
         type: String,
-        required: [true, 'Email requis'],
+        required: [true, 'email requis'],
         validate: [
             (email) => {
                 const regex = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
                 return regex.test(email);
             },
-            'Email invalide',
+            'email invalide',
         ],
         unique: true,
     },
     password: {
         type: String,
-        required: [true, 'Mot de passe requis'],
+        required: [true, 'mot de passe requis'],
         validate: [
             (password) => {
                 const regex = new RegExp('^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\\D*\\d)[A-Za-z\\d!$%@#£€*?&]{8,}$');
                 return regex.test(password);
             },
-            'Mot de passe invalide',
+            'mot de passe invalide',
         ],
-        maxlength: [40, '40 caractères maximum'],
+        maxlength: [40, 'mot de passe trop long'],
     },
 });
 
 // On vérifie
-userSchema.plugin(uniqueValidator, { message: 'Pseudo et/ou email invalide(s)' });
+userSchema.plugin(uniqueValidator, { message: '{PATH} déjà utilisé' });
 
 // A la sauvegarde, on hash le password
 userSchema.pre('save', function (next) {
@@ -53,5 +53,3 @@ userSchema.pre('save', function (next) {
 });
 
 module.exports = mongoose.model('User', userSchema);
-
-// unique validation, création et envoie d'un token sur le front

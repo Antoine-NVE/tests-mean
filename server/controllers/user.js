@@ -16,5 +16,16 @@ exports.register = (req, res) => {
 
             res.status(201).json({ token });
         })
-        .catch((error) => res.status(400).json({ error })); // { error: error.message || error }
+        .catch((error) => {
+            let errorMessage = 'Une erreur est survenue';
+
+            // Gestion des erreurs de validation
+            if (error.errors) {
+                errorMessage = Object.values(error.errors)
+                    .map((err) => err.message)
+                    .join(', ');
+            }
+
+            res.status(400).json({ message: errorMessage }); // { error: error.message || error }
+        });
 };
