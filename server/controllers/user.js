@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const User = require('../models/User');
 
 exports.register = (req, res) => {
@@ -8,6 +11,10 @@ exports.register = (req, res) => {
     });
 
     user.save()
-        .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
+        .then((user) => {
+            const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+
+            res.status(201).json({ token });
+        })
         .catch((error) => res.status(400).json({ error })); // { error: error.message || error }
 };

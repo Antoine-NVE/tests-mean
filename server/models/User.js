@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
 
 const userSchema = mongoose.Schema({
@@ -7,6 +8,7 @@ const userSchema = mongoose.Schema({
         required: [true, 'Pseudo requis'],
         minlength: [3, '3 caractères minimum'],
         maxlength: [15, '15 caractères maximum'],
+        unique: true,
     },
     email: {
         type: String,
@@ -18,6 +20,7 @@ const userSchema = mongoose.Schema({
             },
             'Email invalide',
         ],
+        unique: true,
     },
     password: {
         type: String,
@@ -33,6 +36,9 @@ const userSchema = mongoose.Schema({
     },
 });
 
+// On vérifie
+userSchema.plugin(uniqueValidator, { message: 'Pseudo et/ou email invalide(s)' });
+
 // A la sauvegarde, on hash le password
 userSchema.pre('save', function (next) {
     bcrypt
@@ -47,3 +53,5 @@ userSchema.pre('save', function (next) {
 });
 
 module.exports = mongoose.model('User', userSchema);
+
+// unique validation, création et envoie d'un token sur le front
