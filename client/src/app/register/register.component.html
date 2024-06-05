@@ -1,6 +1,10 @@
 <h1>Inscription</h1>
 
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
+
     <div class="mb-3">
         <label for="pseudo" class="form-label">Pseudo : </label>
         <input
@@ -50,7 +54,12 @@
         <div *ngIf="plainPassword?.errors?.['pattern']" class="invalid-feedback">Minimum 1 majuscule, 1 minuscule, 1 chiffre et 8 caractères</div>
         <div *ngIf="plainPassword?.errors?.['maxlength']" class="invalid-feedback">Maximum 40 caractères</div>
     </div>
-    <button type="submit" class="btn btn-outline-light d-block ms-auto" [disabled]="pseudo?.errors || email?.errors || plainPassword?.errors">
-        S'inscrire
-    </button>
+    <div class="d-flex justify-content-end align-items-center">
+        <div *ngIf="isLoading" class="spinner-border text-light me-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <button type="submit" class="btn btn-outline-light" [disabled]="pseudo?.errors || email?.errors || plainPassword?.errors || isLoading">
+            S'inscrire
+        </button>
+    </div>
 </form>

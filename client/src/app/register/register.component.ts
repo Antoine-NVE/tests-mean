@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-register',
@@ -10,7 +12,8 @@ import { UserService } from '../services/user.service';
     templateUrl: './register.component.html',
     styleUrl: './register.component.css',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
+    // Formulaire
     public registerForm: FormGroup = new FormGroup({
         pseudo: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]),
         email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
@@ -20,23 +23,47 @@ export class RegisterComponent {
             Validators.maxLength(40),
         ]),
     });
+
+    // Inputs du formulaire
     public pseudo = this.registerForm.get('pseudo');
     public email = this.registerForm.get('email');
     public plainPassword = this.registerForm.get('plainPassword');
 
-    constructor(private userService: UserService) {}
+    // Envoie des informations à l'utilisateur
+    public isLoading: boolean = false;
+    public errorMessage: string = '';
+
+    // Détecte tout changement de n'importe quel input, et supprime le message d'erreur
+    public registerFormChangesSubscription: Subscription = this.registerForm.valueChanges.subscribe(() => {
+        this.errorMessage = '';
+    });
+
+    constructor(private userService: UserService, private router: Router) {}
 
     public onSubmit() {
+        this.isLoading = true;
         if (this.registerForm.valid) {
-            // console.log('Formulaire soumis avec succès : ');
-            // console.log(this.registerForm.value);
-
             this.userService.register(this.registerForm.value).subscribe({
-                next: (response: {}) => console.log(response),
-                error: (error) => console.log(error.message),
+                next: (response: { token: string }) => {
+                    // On stocke le token
+                    localStorage.setItem('token', response.token);
+
+                    // On redirige
+                    this.router.navigate(['/']);
+                },
+                error: (error) => {
+                    // On indique que ce n'est plus en chargement et on affiche l'erreur
+                    this.isLoading = false;
+                    this.errorMessage = error;
+                },
             });
         } else {
             console.log('Formulaire non valide');
         }
+    }
+
+    ngOnDestroy(): void {
+        // Arrête la détection des changements des inputs
+        this.registerFormChangesSubscription.unsubscribe();
     }
 }
