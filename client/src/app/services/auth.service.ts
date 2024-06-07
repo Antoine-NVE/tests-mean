@@ -1,18 +1,18 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../../models/User';
 import { Observable, catchError, throwError } from 'rxjs';
+import { User } from '../../models/User';
 
 @Injectable({
     providedIn: 'root',
 })
-export class UserService {
+export class AuthService {
     private url = 'http://localhost:3000/api/user/';
 
     constructor(private http: HttpClient) {}
 
-    public register(user: User): Observable<{ token: string }> {
-        return this.http.post<{ token: string }>(this.url, user).pipe(catchError(this.handleError));
+    public register(user: User): Observable<{ message: string; token: string }> {
+        return this.http.post<{ message: string; token: string }>(this.url, user).pipe(catchError(this.handleError));
     }
 
     // Gestion d'erreurs

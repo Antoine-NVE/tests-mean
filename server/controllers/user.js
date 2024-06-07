@@ -14,7 +14,7 @@ exports.register = (req, res) => {
         .then((user) => {
             const token = jwt.sign({ _id: user._id }, process.env.SECRET);
 
-            res.status(201).json({ token });
+            res.status(201).json({ message: 'Authentifié', token });
         })
         .catch((error) => {
             const errorMessage = Object.values(error.errors)
@@ -24,3 +24,9 @@ exports.register = (req, res) => {
             res.status(400).json({ message: errorMessage }); // { error: error.message || error }
         });
 };
+
+// exports.login
+
+// exports.getInformations
+
+// exports.isAuthenticated

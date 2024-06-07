@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'app-register',
@@ -38,14 +38,14 @@ export class RegisterComponent implements OnDestroy {
         this.errorMessage = '';
     });
 
-    constructor(private userService: UserService, private router: Router) {}
+    constructor(private authService: AuthService, private router: Router) {}
 
     public onSubmit() {
         this.isLoading = true;
         if (this.registerForm.valid) {
-            this.userService.register(this.registerForm.value).subscribe({
-                next: (response: { token: string }) => {
-                    // On stocke le token
+            this.authService.register(this.registerForm.value).subscribe({
+                next: (response: { message: string; token: string }) => {
+                    // On stocke le JWT
                     localStorage.setItem('token', response.token);
 
                     // On redirige
