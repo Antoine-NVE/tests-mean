@@ -12,7 +12,7 @@ export class AuthService {
     constructor(private http: HttpClient) {}
 
     public register(user: User): Observable<{ message: string; token: string }> {
-        return this.http.post<{ message: string; token: string }>(this.url, user).pipe(catchError(this.handleError));
+        return this.http.post<{ message: string; token: string }>(this.url + 'register', user).pipe(catchError(this.handleError));
     }
 
     // Gestion d'erreurs
