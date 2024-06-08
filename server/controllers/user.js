@@ -31,14 +31,14 @@ exports.login = (req, res) => {
         .then((user) => {
             if (user === null) {
                 // Si l'utilisateur n'existe pas
-                res.status(401).json({ error: 'Informations de connexion incorrectes' });
+                res.status(401).json({ message: 'Informations de connexion incorrectes' });
             } else {
                 bcrypt
-                    .compare(req.body.password, user.password)
+                    .compare(req.body.plainPassword, user.password)
                     .then((valid) => {
                         if (!valid) {
                             // Si le mot de passe est incorrect
-                            res.status(401).json({ error: 'Informations de connexion incorrectes' });
+                            res.status(401).json({ message: 'Informations de connexion incorrectes' });
                         } else {
                             const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '24h' });
 
@@ -46,12 +46,12 @@ exports.login = (req, res) => {
                         }
                     })
                     .catch((error) => {
-                        res.status(500).json({ error });
+                        res.status(500).json({ message: error });
                     });
             }
         })
         .catch((error) => {
-            res.status(500).json({ error });
+            res.status(500).json({ message: error });
         });
 };
 

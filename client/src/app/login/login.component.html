@@ -1,1 +1,48 @@
 <h1>Connexion</h1>
+
+<form [formGroup]="loginForm" (submit)="onSubmit()">
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
+
+    <div class="mb-3">
+        <label for="identifier" class="form-label">Pseudo ou email : </label>
+        <input
+            id="identifier"
+            type="text"
+            class="form-control"
+            [ngClass]="
+                identifier?.errors && (identifier?.touched || identifier?.dirty) ? 'is-invalid' : !identifier?.errors && identifier?.dirty ? 'is-valid' : ''
+            "
+            formControlName="identifier"
+        />
+        <div class="valid-feedback">Looks good!</div>
+        <div *ngIf="identifier?.errors?.['required']" class="invalid-feedback">Veuillez saisir votre identifiant</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="plainPassword" class="form-label">Mot de passe : </label>
+        <input
+            id="plainPassword"
+            type="password"
+            class="form-control"
+            [ngClass]="
+                plainPassword?.errors && (plainPassword?.touched || plainPassword?.dirty)
+                    ? 'is-invalid'
+                    : !plainPassword?.errors && plainPassword?.dirty
+                    ? 'is-valid'
+                    : ''
+            "
+            formControlName="plainPassword"
+        />
+        <div class="valid-feedback">Looks good!</div>
+        <div *ngIf="plainPassword?.errors?.['required']" class="invalid-feedback">Veuillez saisir votre mot de passe</div>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center">
+        <div *ngIf="isLoading" class="spinner-border text-light me-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <button type="submit" class="btn btn-outline-light" [disabled]="identifier?.errors || plainPassword?.errors || isLoading">S'inscrire</button>
+    </div>
+</form>

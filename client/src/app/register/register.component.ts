@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -40,26 +40,23 @@ export class RegisterComponent implements OnDestroy {
 
     constructor(private authService: AuthService, private router: Router) {}
 
-    public onSubmit() {
+    public onSubmit(): void {
         this.isLoading = true;
-        if (this.registerForm.valid) {
-            this.authService.register(this.registerForm.value).subscribe({
-                next: (response: { message: string; token: string }) => {
-                    // On stocke le JWT
-                    localStorage.setItem('token', response.token);
 
-                    // On redirige
-                    this.router.navigate(['/']);
-                },
-                error: (error) => {
-                    // On indique que ce n'est plus en chargement et on affiche l'erreur
-                    this.isLoading = false;
-                    this.errorMessage = error;
-                },
-            });
-        } else {
-            console.log('Formulaire non valide');
-        }
+        this.authService.register(this.registerForm.value).subscribe({
+            next: (response: { message: string; token: string }) => {
+                // On stocke le JWT
+                localStorage.setItem('token', response.token);
+
+                // On redirige
+                this.router.navigate(['/']);
+            },
+            error: (error) => {
+                // On indique que ce n'est plus en chargement et on affiche l'erreur
+                this.isLoading = false;
+                this.errorMessage = error;
+            },
+        });
     }
 
     ngOnDestroy(): void {
