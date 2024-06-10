@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Post } from '../../models/Post';
+import { Post } from '../../../models/Post';
 import { CommonModule } from '@angular/common';
 
 @Component({
