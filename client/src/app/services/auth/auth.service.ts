@@ -19,6 +19,10 @@ export class AuthService {
         return this.http.post<{ message: string; token: string }>(this.url + 'login', user).pipe(catchError(this.handleError));
     }
 
+    public authenticated(token: { token: string }): Observable<{ message: string; authenticated: boolean }> {
+        return this.http.post<{ message: string; authenticated: boolean }>(this.url + 'authenticated', token).pipe(catchError(this.handleError));
+    }
+
     // Gestion d'erreurs
     private handleError(error: HttpErrorResponse) {
         let errorMessage: string;

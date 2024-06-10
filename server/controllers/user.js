@@ -55,6 +55,20 @@ exports.login = (req, res) => {
         });
 };
 
-// exports.getInformations
+exports.authenticated = (req, res) => {
+    if (!req.body.token) {
+        res.status(403).json({ message: 'Token absent', authenticated: false });
+    } else {
+        jwt.verify(req.body.token, process.env.SECRET, (err) => {
+            if (err) {
+                res.status(401).json({ message: 'Token invalide', authenticated: false });
+            } else {
+                res.status(200).json({ message: 'Authentifié', authenticated: true });
+            }
+        });
+    }
+};
 
-// exports.isAuthenticated
+// exports.informations = (req, res) => {
+
+// }
